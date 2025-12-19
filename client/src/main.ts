@@ -1,24 +1,40 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import "./style.css";
+import { searchBooks } from "./api";
+import type { OpenLibraryDoc } from "./types";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const searchInput = document.querySelector<HTMLInputElement>("#searchInput")!;
+const searchBtn = document.querySelector<HTMLButtonElement>("#searchBtn")!;
+const resultsDiv = document.querySelector<HTMLDivElement>("#results")!;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+searchBtn.addEventListener("click", async () => {
+  const query = searchInput.value.trim();
+  if (!query) return;
+
+  try {
+    const books = await searchBooks(query);
+    renderResults(books.slice(0, 10));
+  } catch (error) {
+    resultsDiv.textContent = "Error fetching books.";
+  }
+});
+
+
+function renderResults(books: OpenLibraryDoc[]): void {
+  resultsDiv.innerHTML = "";
+
+  books.forEach((book) => {
+    const div = document.createElement("div");
+    div.className = "book-card";
+
+    const title = document.createElement("h3");
+    title.textContent = book.title;
+
+    const author = document.createElement("p");
+    author.textContent = book.author_name?.[0] ?? "Unknown author";
+
+    div.appendChild(title);
+    div.appendChild(author);
+
+    resultsDiv.appendChild(div);
+  });
+}
