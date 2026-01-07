@@ -1,10 +1,8 @@
 import type { OpenLibraryDoc } from "./types";
 
-export async function searchBooks(
-  query: string
-): Promise<OpenLibraryDoc[]> {
+export async function searchBooks(query: string): Promise<OpenLibraryDoc[]> {
   const res = await fetch(
-    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`,
   );
 
   if (!res.ok) {

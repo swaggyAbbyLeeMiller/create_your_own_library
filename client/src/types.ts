@@ -1,16 +1,15 @@
-export interface OpenLibraryDoc
-{
-    key: string;
-    title: string;
-    author_name: string;
-    first_publish_year?: number;
-    cover_id?: number;
+export interface OpenLibraryDoc {
+  key: string;
+  title: string;
+  author_name: string;
+  first_publish_year?: number;
+  cover_id?: number;
 }
 
-export interface LibraryBook{
-    title: string;
-    author: string;
-    year?: number;
-    coverID?: number;
-    id: string;  
+export interface LibraryBook {
+  title: string;
+  author: string;
+  year?: number;
+  coverID?: number;
+  id: string;
 }
